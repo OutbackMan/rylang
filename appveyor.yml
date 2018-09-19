@@ -7,7 +7,7 @@ clone_depth: 1
 before_build:
   - mkdir build && cd build
 build_script:
-  - cmake -DCMAKE_C_FLAGS=TRUE -DCMAKE_C_COMPILER=clang -DCMAKE_LINKER=ldd-link -DCMAKE_BUILD_TYPE=Release ..
+  - cmake -DCMAKE_C_COMPILER="C:/Program Files/LLVM/bin/clang.exe" -DCMAKE_LINKER="C:/Program Files/LLVM/bin/ldd-link.exe" -DCMAKE_BUILD_TYPE=Release ..
   - cmake --build .
 test_script:
   - ctest . -j2 
