@@ -1,4 +1,5 @@
-*.c text
-*.h text
-*.cmake text
+*.c text filter=spabs
+*.h text filter=spabs
+*.cmake text filter=spabs
+*.yml text filter=spabs
 *.txt text
