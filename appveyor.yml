@@ -19,7 +19,7 @@ build_script:
   - cd %APPVEYOR_BUILD_FOLDER%
   - mkdir build
   - cd build
-  - cmake -DCMAKE_C_COMPILER=clang-cl -DCMAKE_LINKER=lld-link -DCMAKE_BUILD_TYPE=Release -G Ninja ..
+  - cmake -DCMAKE_C_COMPILER="C:\Program Files (x86)\LLVM\bin\clang-cl.exe" -DCMAKE_BUILD_TYPE=Release -G Ninja ..
   - cmake --build .
 test_script:
   - ctest . -j2 
