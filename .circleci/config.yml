@@ -1,0 +1,30 @@
+version: 2
+jobs:
+  build:
+    branches:
+      only:
+        - master
+    macos:
+      xcode: "10.0.0"
+    steps:
+      - checkout
+      - restore_cache:
+          key: CMAKE
+      - run:
+          name: Ensuring CMake is Installed
+          command: type -P cmake > /dev/null || brew install cmake
+	  - run:
+	      name: Ensuring Out-Of-Tree Build
+		  command: mkdir build && cd build
+      - run:
+          name: Configuring Rylang
+          command: cmake -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release ..
+      - run:
+          name: Building Rylang
+          command: cmake --build . -- -j2
+      - run:
+          name: Testing Rylang
+          command: ctest . -j2 
+      - save_cache:
+          key: CMAKE
+          paths: "/usr/local/Cellar/cmake"

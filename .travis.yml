@@ -1,0 +1,21 @@
+branches:
+  only:
+    - master
+git:
+  depth: 1
+  quiet: true
+  
+language: c
+compiler: clang
+addons:
+  apt:
+    sources:
+      - llvm-toolchain-trusty-6.0
+    packages:
+      - clang-6.0
+before_script:
+  - mkdir build && cd build
+script:
+  - cmake -DCMAKE_C_COMPILER=clang-6.0 -DCMAKE_BUILD_TYPE=Release ..
+  - cmake --build . -- -j2
+  - ctest . -j2
