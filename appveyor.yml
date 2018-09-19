@@ -11,14 +11,14 @@ before_build:
   - cd C:\ninja
   - appveyor DownloadFile https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-win.zip
   - 7z x ninja-win.zip
-  - set PATH=C:\ninja;C:\msys64\usr\bin;%PATH%
-  - bash -c "pacman -S clang lld --noconfirm"
+  - set PATH=C:\ninja;C:\msys64\usr\bin;C:\msys64\mingw64\bin;%PATH%
+  - bash -c "pacman -S mingw-w64-x86_64-clang --noconfirm"
 
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%
   - mkdir build
   - cd build
-  - cmake -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_LINKER=lld -DCMAKE_BUILD_TYPE=Release ..
-  - cmake --build .
+  - cmake -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release ..
+  - ninja -j %NUMBER_OF_PROCESSORS%
 test_script:
-  - ctest . -j2 
+  - ctest -j %NUMBER_OF_PROCESSORS% 
