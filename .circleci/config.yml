@@ -9,13 +9,13 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: CMAKE
+        key: CMAKE
       - run:
           name: Ensuring CMake is Installed
           command: type -P cmake > /dev/null || brew install cmake
-	  - run:
-	      name: Ensuring Out-Of-Tree Build
-		  command: mkdir build && cd build
+      - run:
+          name: Ensuring Out-Of-Tree Build
+          command: mkdir build && cd build
       - run:
           name: Configuring Rylang
           command: cmake -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release ..
