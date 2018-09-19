@@ -12,13 +12,13 @@ before_build:
   - appveyor DownloadFile https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-win.zip
   - 7z x ninja-win.zip
   - set PATH=C:\ninja;C:\msys64\usr\bin;%PATH%
-  - bash -c "pacman -S clang"
+  - bash -c "pacman -S clang --noconfirm"
 
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%
   - mkdir build
   - cd build
-  - cmake -GNinja -DCMAKE_C_COMPILER="C:/Program Files (x86)/LLVM/bin/clang-cl.exe" -DCMAKE_CXX_COMPILER="C:/Program Files (x86)/LLVM/bin/clang-cl.exe" -DCMAKE_BUILD_TYPE=Release ..
+  - cmake -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release ..
   - cmake --build .
 test_script:
   - ctest . -j2 
