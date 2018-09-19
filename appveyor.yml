@@ -11,8 +11,8 @@ before_build:
   - cd C:\ninja
   - appveyor DownloadFile https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-win.zip
   - 7z x ninja-win.zip
-  - set PATH=C:\ninja;C:\msys64\usr\bin
-  - bash -c "echo hi"
+  - set PATH=C:\ninja;C:\msys64\usr\bin;%PATH%
+  - bash -c "pacman -S clang"
 
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%
