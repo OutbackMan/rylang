@@ -1,4 +1,3 @@
-.circleci/config.yml:
 version: 2
 jobs:
   build:
@@ -29,42 +28,3 @@ jobs:
       - save_cache:
           key: CMAKE
           paths: "/usr/local/Cellar/cmake"
-          
-      
-.travis.yml:
-branches:
-  only:
-    - master
-git:
-  depth: 1
-  quiet: true
-  
-language: c
-compiler: clang
-addons:
-  apt:
-    sources:
-      - llvm-toolchain-trusty-6.0
-    packages:
-      - clang-6.0
-before_script:
-  - mkdir build && cd build
-script:
-  - cmake -DCMAKE_C_COMPILER=clang-6.0 -DCMAKE_BUILD_TYPE=Release ..
-  - cmake --build . -- -j2
-  - ctest . -j2
-
-appveyor.yml:
-branches:
-  only:
-    - master
-    
-clone_depth: 1
-    
-before_build:
-  - mkdir build && cd build
-build_script:
-  - cmake -G "MinGW Makefiles" -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release ..
-  - cmake --build .. -- -j2
-test_script:
-  - ctest . -j2 

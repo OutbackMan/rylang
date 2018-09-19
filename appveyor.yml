@@ -1,0 +1,13 @@
+branches:
+  only:
+    - master
+    
+clone_depth: 1
+    
+before_build:
+  - mkdir build && cd build
+build_script:
+  - cmake -G "MinGW Makefiles" -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release ..
+  - cmake --build .. -- -j2
+test_script:
+  - ctest . -j2 
