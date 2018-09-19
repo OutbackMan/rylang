@@ -5,9 +5,9 @@ branches:
 clone_depth: 1
     
 before_build:
-  - ps: mkdir build && cd build
+  - mkdir build && cd build
 build_script:
-  - ps: cmake -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release ..
-  - ps: cmake --build .
+  - cmake -DCMAKE_C_FLAGS=TRUE -DCMAKE_C_COMPILER=clang -DCMAKE_LINKER=ldd-link -DCMAKE_BUILD_TYPE=Release ..
+  - cmake --build .
 test_script:
-  - ps: ctest . -j2 
+  - ctest . -j2 
