@@ -8,9 +8,8 @@ image: Visual Studio 2017
 
 before_build:
   - mkdir build && cd build
-  - clang --version
 build_script:
-  - cmake -DCMAKE_C_COMPILER:PATH="%ProgramFiles(x86)%\LLVM\bin\clang.exe" -DCMAKE_CXX_COMPILER:PATH="%ProgramFiles(x86)%\LLVM\bin\clang.exe" -DCMAKE_C_COMPILER_ID="Clang" -DCMAKE_CXX_COMPILER_ID="Clang" -DCMAKE_SYSTEM_NAME="Generic" ..
+  - cmake -DCMAKE_C_COMPILER=clang -DCMAKE_LINKER=lld-link -DCMAKE_BUILD_TYPE=Release -DCMAKE_SH="CMAKE_SH-NOTFOUND" -G "MinGW Makefiles" ..
   - cmake --build .
 test_script:
   - ctest . -j2 
