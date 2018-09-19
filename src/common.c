@@ -27,11 +27,11 @@ xmalloc(size_t num_bytes)
   void* mem = malloc(num_bytes);
   if (mem == NULL) {
     FATAL(
-	  "Failed to allocate %zd bytes.\nErrno %d: %s", 
-	  num_bytes, 
-	  errno, 
-	  strerror(errno)
-	);
+	    "Failed to allocate %zd bytes.\nErrno %d: %s", 
+	    num_bytes, 
+	    errno, 
+	    strerror(errno)
+	  );
   } else {
     return mem;	  
   }
@@ -43,12 +43,12 @@ xcalloc(size_t num_items, size_t item_size)
   void* mem = calloc(num_items, item_size);
   if (mem == NULL) {
     FATAL(
-	  "Failed to allocate %zd items of size %zd.\nErrno %d: %s", 
-	  num_items,
-	  item_size, 
-	  errno, 
-	  strerror(errno)
-	);
+	    "Failed to allocate %zd items of size %zd.\nErrno %d: %s", 
+	    num_items,
+	    item_size, 
+	    errno, 
+	    strerror(errno)
+	  );
   } else {
     return mem;	  
   }
@@ -60,11 +60,11 @@ xrealloc(void* orig_mem, size_t mem_size_change)
   void* mem = realloc(orig_mem, mem_size_change);
   if (mem == NULL) {
     FATAL(
-	  "Failed to reallocate %zd bytes.\nErrno %d: %s", 
-	  mem_size_change,
-	  errno, 
-	  strerror(errno)
-	);
+	    "Failed to reallocate %zd bytes.\nErrno %d: %s", 
+	    mem_size_change,
+	    errno, 
+	    strerror(errno)
+	  );
   } else {
     return mem;	  
   }
@@ -77,10 +77,10 @@ buf__grow(void* content, size_t desired_len, size_t elem_size)
   size_t new_size = offsetof(Buf, content) + new_cap * elem_size;
   Buf* new_buf = NULL;
   if (content != NULL) {
-    xrealloc(BUF__HEADER(content), new_size); 
+    new_buf = xrealloc(BUF__HEADER(content), new_size); 
   } else {
-	new_buf = xmalloc(desired_len);
-	new_buf->len = 0;
+	  new_buf = xmalloc(desired_len);
+	  new_buf->len = 0;
   }
   new_buf->cap = new_cap;
   return new_buf->content;
