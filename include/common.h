@@ -101,13 +101,13 @@ typedef struct {
   ((buf != NULL) ? BUF__HEADER(buf)->len : 0)
 
 #define BUF__FIT(buf, amount) \
-  (amount <= BUF_CAP(buf) ? 0 : (buf = buf__grow(buf, amount, sizeof(*buf))))
+  (amount <= BUF_CAP(buf) ? 0 : (buf = buf__grow(buf, amount, sizeof(*(buf)))))
 
 #define BUF_PUSH(buf, elem) \
   (BUF__FIT(buf, BUF_LEN(buf) + 1), (buf)[BUF__HEADER(buf)->len++] = elem)
 
 #define BUF_FREE(buf) \
-  ((buf != NULL) ? (free(BUF__HEADER(buf)), (buf = NULL)) : 0)
+  ((buf != NULL) ? (free(BUF__HEADER(buf)), (buf = NULL)) : (void)(0))
 
 byte* NON_NULL
 buf__grow(void* NULLABLE content, size_t desired_len, size_t elem_size);
