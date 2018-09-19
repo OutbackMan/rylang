@@ -22,12 +22,12 @@ if(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
    ${CMAKE_C_COMPILER_ID}
   )
 
-  if(${CLANG_VERSION} LESS 600)
+  if(${CLANG_VERSION} LESS 500)
     message(
       FATAL_ERROR
-      "[RYLANG] -- Only supported compiler is clang 6.x.x"
+      "[RYLANG] -- Please use clang > 5 supporting GNU ABI"
     )
-  endif(${CLANG_VERSION} LESS 600)
+  endif(${CLANG_VERSION} LESS 500)
 
   set(
     RYLANG_SOURCES 
@@ -75,7 +75,7 @@ if(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
 else(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
   message(
     FATAL_ERROR
-	"[RYLANG] -- Only supported compiler is clang 6.x.x"
+	"[RYLANG] -- Please use clang > 5 supporting GNU ABI"
   )
 endif(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
 
