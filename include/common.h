@@ -91,23 +91,23 @@ typedef struct {
   byte content[];
 } Buf;
 
-#define BUF__HEADER(buf) \
-  ((Buf* )((byte* )buf - offsetof(Buf, content)))
+#define BUF__HEADER(b) \
+  ((Buf* )((byte* )(b) - offsetof(Buf, content)))
 
-#define BUF_CAP(buf) \
-  ((buf != NULL) ? BUF__HEADER(buf)->cap : 0)
+#define BUF_CAP(b) \
+  (((b) != NULL) ? BUF__HEADER(b)->cap : 0)
 
-#define BUF_LEN(buf) \
-  ((buf != NULL) ? BUF__HEADER(buf)->len : 0)
+#define BUF_LEN(b) \
+  (((b) != NULL) ? BUF__HEADER(b)->len : 0)
 
-#define BUF__FIT(buf, amount) \
-  (amount <= BUF_CAP(buf) ? 0 : (buf = buf__grow(buf, amount, sizeof(*(buf)))))
+#define BUF__FIT(b, amount) \
+  ((amount) <= BUF_CAP(b) ? 0 : ((b) = buf__grow((b), amount, sizeof(*(b)))))
 
-#define BUF_PUSH(buf, elem) \
-  (BUF__FIT(buf, BUF_LEN(buf) + 1), (buf)[BUF__HEADER(buf)->len++] = elem)
+#define BUF_PUSH(b, elem) \
+  (BUF__FIT((b), BUF_LEN(b) + 1), (b)[BUF__HEADER(b)->len++] = (elem))
 
-#define BUF_FREE(buf) \
-  ((buf != NULL) ? (free(BUF__HEADER(buf)), (buf = NULL)) : (void)(0))
+#define BUF_FREE(b) \
+  (((b) != NULL) ? (free(BUF__HEADER(b)), (b) = NULL) : (void)(0))
 
 byte* NON_NULL
 buf__grow(void* NULLABLE content, size_t desired_len, size_t elem_size);
