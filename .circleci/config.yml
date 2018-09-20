@@ -13,7 +13,7 @@ jobs:
           command: |
             mkdir ~/clang6
             curl http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-14.04.tar.xz > clang.tar.xz
-            tar -xf clang.tar.xz -d ~/clang6
+            tar -xf clang.tar.xz -C ~/clang6
             export PATH=~/clang6:$PATH
       - run:
           name: Installing Ninja

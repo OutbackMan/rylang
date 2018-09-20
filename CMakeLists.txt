@@ -33,7 +33,7 @@ if(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
       FATAL_ERROR
       "[RYLANG] -- Please use clang > 6"
     )
-  endif(${CLANG_VERSION} LESS 500)
+  endif(${CLANG_VERSION} LESS 600)
 
   set(
     RYLANG_SOURCES 
