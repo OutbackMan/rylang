@@ -9,10 +9,7 @@ os: osx
 osx_image: xcode10
   
 install:
-  - mkdir ~/ninja 
-  - curl https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-mac.zip > ninja.zip
-  - unzip ninja.zip -d ~/ninja
-  - export PATH=~/ninja:$PATH
+  - brew install ninja
 before_script:
   - mkdir build && cd build
 script:

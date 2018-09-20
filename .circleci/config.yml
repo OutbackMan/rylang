@@ -9,6 +9,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Installing Unzip
+          command: sudo apt-get install unzip -y 
+      - run:
           name: Installing Ninja
           command: |
             curl https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip  > ninja.zip 
