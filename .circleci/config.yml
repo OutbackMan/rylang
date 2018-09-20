@@ -6,8 +6,6 @@ jobs:
         - master
     docker:
       - image: buildpack-deps:trusty
-    environment:
-      PATH: "~/cmake/cmake-3.12.2-Linux-x86_64/bin:~/clang6/clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-14.04/bin:$CIRCLE_WORKING_DIRECTORY/ninja-binaries/linux:$PATH"
     steps:
       - checkout
       - run:
@@ -16,17 +14,23 @@ jobs:
             mkdir ~/cmake
             curl https://cmake.org/files/v3.12/cmake-3.12.2-Linux-x86_64.tar.gz -o cmake.tar.gz
             tar -xf cmake.tar.gz --no-same-owner -C ~/cmake
+            echo 'PATH=~/cmake/cmake-3.12.2-Linux-x86_64/bin:$PATH' >> $BASH_ENV
       - run:
           name: Downloading Clang6
           command: |
             mkdir ~/clang6
             curl http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-14.04.tar.xz -o clang.tar.xz
             tar -xf clang.tar.xz --no-same-owner -C ~/clang6
+            echo 'PATH=~/clang6/clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-14.04/bin:$PATH' >> $BASH_ENV
+      - run:
+          name: Adding Ninja to $PATH
+          command: echo 'PATH=$CIRCLE_WORKING_DIRECTORY/ninja-binaries/linux:$PATH' >> $BASH_ENV
       - run:
           name: Ensuring Out-Of-Tree Build
           command: |
             mkdir build
             cd build
+            source $BASH_ENV
       - run:
           name: Configuring Rylang
           command: cmake -GNinja -DCMAKE_C_COMPILER=clang-6.0 -DCMAKE_BUILD_TYPE=Release ..
