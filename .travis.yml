@@ -13,7 +13,7 @@ language: c
 install:
   - mkdir ~/clang6
   - wget http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-14.04.tar.xz
-  - unzip clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-14.04.tar.xz -d ~/clang6
+  - tar -xf clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-14.04.tar.xz -C ~/clang6
   - mkdir ~/ninja
   - wget https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip
   - unzip ninja-linux.zip -d ~/ninja
