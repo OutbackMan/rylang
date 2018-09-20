@@ -10,11 +10,7 @@ jobs:
       - checkout
       - run:
           name: Installing Ninja
-          command: |
-            mkdir ~/ninja
-            wget https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip
-            unzip ninja-linux.zip -d ~/ninja
-            export PATH=~/ninja:$PATH
+          command: sudo apt-get install ninja
       - run:
           name: Ensuring Out-Of-Tree Build
           command: |

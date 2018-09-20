@@ -11,6 +11,7 @@ language: c
 compiler: clang
 
 install:
+  - brew install llvm --with-clang
   - brew install ninja
 before_script:
   - mkdir build
