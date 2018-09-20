@@ -11,8 +11,10 @@ install:
   - mkdir ~/clang6
   - curl http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-apple-darwin.tar.xz > clang.tar.xz
   - tar -xf clang.tar.xz -C ~/clang6
-  - export PATH=~/clang6:$PATH
-  - brew install ninja
+  - mkdir ~/ninja
+  - curl https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-mac.zip > ninja-mac.zip
+  - tar -xf ninja-mac.zip -C ~/ninja
+  - export PATH=~/ninja:~/clang6:$PATH
 before_script:
   - mkdir build && cd build
 script:

@@ -17,7 +17,7 @@ if(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
   if(WIN32 AND NOT MINGW)
     message(
       FATAL_ERROR
-      "[RYLANG] -- Please use clang > 6 supporting GNU ABI"
+      "[RYLANG] -- On windows, install and use clang > 6 supporting GNU ABI"
     )
   endif(WIN32 AND NOT MINGW)
   string(
@@ -31,7 +31,7 @@ if(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
   if(${CLANG_VERSION} LESS 600)
     message(
       FATAL_ERROR
-      "[RYLANG] -- Please use clang > 6"
+      "[RYLANG] -- Expected clang > 6. Recieved ${CMAKE_C_COMPILER_VERSION}"
     )
   endif(${CLANG_VERSION} LESS 600)
 
@@ -81,7 +81,7 @@ if(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
 else(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
   message(
     FATAL_ERROR
-	"[RYLANG] -- Please use clang > 6"
+	"[RYLANG] -- Expected clang compiler. Recieved ${CMAKE_C_COMPILER_ID}"
   )
 endif(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
 
