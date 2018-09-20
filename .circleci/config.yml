@@ -4,6 +4,8 @@ jobs:
     branches:
       only:
         - master
+    docker:
+      - image: buildpack-deps:trusty 
     steps:
       - checkout
       - run:
