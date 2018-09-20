@@ -21,7 +21,7 @@ addons:
 install:
   - mkdir ~/ninja
   - cd ~/ninja
-  - curl https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip > ninja-linux.zip
+  - wget https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip
   - unzip ninja-linux.zip
   - cd .. 
   - export PATH=~/ninja:$PATH
