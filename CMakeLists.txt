@@ -60,11 +60,11 @@ if(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
 
   target_compile_options(
     rylang
-	PRIVATE
+	  PRIVATE
     -Wall -Wextra -Wpedantic -Wfloat-equal -Wunreachable-code -Wshadow
-	-Wno-language-extension-token -Wno-nullability-extension 
-	-Wno-incompatible-pointer-types -Wno-gnu-zero-variadic-macro-arguments
-	-Wno-gnu-case-range
+	  -Wno-language-extension-token -Wno-nullability-extension 
+	  -Wno-gnu-zero-variadic-macro-arguments -Wno-gnu-case-range
+    -Wno-incompatible-pointer-types-discards-qualifiers
   )
 
   target_compile_options(
@@ -124,11 +124,6 @@ target_include_directories(
   PRIVATE 
   ${Rylang_SOURCE_DIR}/include
   ${Rylang_SOURCE_DIR}/tests
-)
-target_compile_options(
-  rylang_test_driver
-  PRIVATE
-  -Wno-incompatible-pointer-types
 )
 
 foreach(rylang_test_suite ${rylang_test_suites})

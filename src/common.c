@@ -79,7 +79,7 @@ buf__grow(void* content, size_t desired_len, size_t elem_size)
   if (content != NULL) {
     new_buf = xrealloc(BUF__HEADER(content), new_size); 
   } else {
-	  new_buf = xmalloc(desired_len);
+	  new_buf = xmalloc(new_size);
 	  new_buf->len = 0;
   }
   new_buf->cap = new_cap;
