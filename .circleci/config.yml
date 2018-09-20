@@ -4,24 +4,16 @@ jobs:
     branches:
       only:
         - master
-    macos:
-      xcode: "10.0.0"
+    docker:
+      - image: buildpack-deps:trusty
     steps:
       - checkout
-      - restore_cache:
-          key: DEPENDENCIES
       - run:
-          name: Ensuring CMake is Installed
-          command: | 
-            type -P cmake > /dev/null
-            brew install cmake
-      - run:
-          name: Ensuring Ninja is Installed
+          name: Installing Ninja
           command: |
-            type -P ninja > /dev/null 
-            curl https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-mac.zip  > ninja-mac.zip 
+            curl https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip  > ninja.zip 
             mkdir ~/ninja
-            unzip ninja-mac -d ~/ninja
+            unzip ninja -d ~/ninja
             export PATH=~/ninja:$PATH
       - run:
           name: Ensuring Out-Of-Tree Build
@@ -37,8 +29,3 @@ jobs:
       - run:
           name: Testing Rylang
           command: ctest -j $(getconf _NPROCESSORS_ONLN)
-      - save_cache:
-          key: DEPENDENCIES
-          paths: 
-            - "/usr/local/Cellar/cmake"
-            - "~/ninja"

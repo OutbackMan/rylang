@@ -4,22 +4,15 @@ branches:
 git:
   depth: 1
   quiet: true
-  
-cache:
-  directories:
-    - "~/ninja"
-    - "~/clang"
+
+os: osx
+osx_image: xcode10
   
 install:
-  - [ -d "~/clang" ] || REQUIRE_CLANG=1
-  - [ -z "$REQUIRE_CLANG" ] || mkdir ~/clang
-  - [ -z "$REQUIRE_CLANG" ] || curl http://releases.llvm.org/6.0.1/clang+llvm-6.0.1-x86_64-linux-gnu-ubuntu-14.04.tar.xz > clang.tar.xz
-  - [ -z "$REQUIRE_CLANG" ] || tar -xvf clang.tar.xz -d ~/clang
-  - [ -d "~/clang" ] || REQUIRE_NINJA=1 
-  - [ -z "$REQUIRE_NINJA" ] || mkdir ~/ninja 
-  - [ -z "$REQUIRE_NINJA" ] || curl https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip > ninja.zip
-  - [ -z "$REQUIRE_NINJA" ] || unzip ninja.zip -d ~/ninja
-  - export PATH=~/clang:~/ninja:$PATH
+  - mkdir ~/ninja 
+  - curl https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-mac.zip > ninja.zip
+  - unzip ninja.zip -d ~/ninja
+  - export PATH=~/ninja:$PATH
 before_script:
   - mkdir build && cd build
 script:
