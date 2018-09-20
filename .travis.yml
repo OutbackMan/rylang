@@ -17,8 +17,14 @@ addons:
       - llvm-toolchain-trusty-6.0
     packages:
       - clang-6.0
-      - ninja
 
+install:
+  - mkdir ~/ninja
+  - cd ~/ninja
+  - curl https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip > ninja-linux.zip
+  - unzip ninja-linux.zip
+  - cd .. 
+  - export PATH=~/ninja:$PATH
 before_script:
   - mkdir build && cd build
 script:
