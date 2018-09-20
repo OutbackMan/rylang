@@ -8,15 +8,17 @@ git:
 os: osx
 
 language: c
-compiler: clang
+compiler: clang-6.0
 
 install:
-  - brew install llvm --with-clang
-  - brew install ninja
+  - mkdir ~/clang6
+  - curl http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-apple-darwin.tar.xz -o clang.tar.xz
+  - tar -xf clang.tar.xz -C ~/clang6
+  - export PATH=~/clang6/clang+llvm-6.0.0-x86_64-apple-darwin/bin:$TRAVIS_BUILD_DIR/ninja-binaries/mac:$PATH
 before_script:
   - mkdir build
   - cd build
 script:
-  - cmake -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release ..
+  - cmake -GNinja -DCMAKE_C_COMPILER=clang-6.0 -DCMAKE_BUILD_TYPE=Release ..
   - ninja -j $(getconf _NPROCESSORS_ONLN)
   - ctest -j $(getconf _NPROCESSORS_ONLN)

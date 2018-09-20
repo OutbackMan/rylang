@@ -5,12 +5,19 @@ jobs:
       only:
         - master
     docker:
-      - image: buildpack-deps:trusty 
+      - image: buildpack-deps:trusty
     steps:
       - checkout
       - run:
-          name: Installing Ninja
-          command: sudo apt-get install ninja
+          name: Downloading Clang6
+          command: |
+            mkdir ~/clang6
+            curl http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz -o clang.tar.xz
+            tar -xf clang.tar.xz -C ~/clang6
+            export PATH=~/clang6/clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-16.04/bin:$PATH
+      - run:
+          name: Adding Ninja to $PATH
+          command: export PATH=$CIRCLE_WORKING_DIRECTORY/ninja-binaries/linux:$PATH
       - run:
           name: Ensuring Out-Of-Tree Build
           command: |
@@ -18,7 +25,7 @@ jobs:
             cd build
       - run:
           name: Configuring Rylang
-          command: cmake -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release ..
+          command: cmake -GNinja -DCMAKE_C_COMPILER=clang-6.0 -DCMAKE_BUILD_TYPE=Release ..
       - run:
           name: Building Rylang
           command: ninja -j $(getconf _NPROCESSORS_ONLN)

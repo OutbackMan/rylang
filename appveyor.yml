@@ -9,14 +9,9 @@ image: Visual Studio 2017
 before_build:
   - PATH=C:\msys64\usr\bin;%PATH%
   - pacman -S mingw-w64-x86_64-clang --noconfirm
-  - mkdir C:\ninja 
-  - cd C:\ninja
-  - appveyor DownloadFile https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-win.zip 
-  - 7z x -oC:\ninja ninja-win.zip
-  - set PATH=C:\ninja;C:\msys64\mingw64\bin;%PATH%
+  - set PATH=%APPVEYOR_BUILD_FOLDER%\ninja-binaries\windows;C:\msys64\mingw64\bin;%PATH%
 
 build_script:
-  - cd %APPVEYOR_BUILD_FOLDER%
   - mkdir build
   - cd build
   - cmake -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release ..
