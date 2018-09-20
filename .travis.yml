@@ -10,23 +10,18 @@ dist: trusty
 
 language: c
 
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-      - llvm-toolchain-trusty-6.0
-    packages:
-      - clang-6.0
-
 install:
+  - mkdir ~/clang6
+  - wget http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-14.04.tar.xz
+  - unzip clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-14.04.tar.xz -d ~/clang6
   - mkdir ~/ninja
   - wget https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip
   - unzip ninja-linux.zip -d ~/ninja
-  - export PATH=~/ninja:$PATH
+  - export PATH=~/ninja:~/clang6:$PATH
 before_script:
   - mkdir build
   - cd build
 script:
-  - cmake -GNinja -DCMAKE_C_COMPILER=clang6.0 -DCMAKE_BUILD_TYPE=Release ..
+  - cmake -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release ..
   - ninja -j $(getconf _NPROCESSORS_ONLN)
   - ctest -j $(getconf _NPROCESSORS_ONLN)
