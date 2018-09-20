@@ -5,17 +5,18 @@ git:
   depth: 1
   quiet: true
 
-install:
-  - mkdir ~/clang6
-  - curl http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-14.04.tar.xz > clang.tar.xz
-  - tar -xf clang.tar.xz -C ~/clang6
-  - mkdir ~/ninja
-  - curl https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip > ninja-linux.zip
-  - unzip ninja-linux.zip -d ~/ninja
-  - export PATH=~/ninja:~/clang6:$PATH
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+      - llvm-toolchain-trusty-6.0
+    packages:
+      - clang-6.0
+      - ninja
+
 before_script:
   - mkdir build && cd build
 script:
-  - cmake -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release ..
+  - cmake -GNinja -DCMAKE_C_COMPILER=clang6.0 -DCMAKE_BUILD_TYPE=Release ..
   - ninja -j $(getconf _NPROCESSORS_ONLN)
   - ctest -j $(getconf _NPROCESSORS_ONLN)
