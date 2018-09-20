@@ -5,6 +5,11 @@ git:
   depth: 1
   quiet: true
 
+sudo: required
+dist: trusty
+
+language: c
+
 addons:
   apt:
     sources:
