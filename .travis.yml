@@ -5,18 +5,19 @@ git:
   depth: 1
   quiet: true
   
-language: c
-compiler: clang
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-      - llvm-toolchain-trusty-6.0
-    packages:
-      - clang-6.0
+cache:
+  directories:
+    - "~/ninja_and_clang"
+  
+install:
+  - clang --version | sed
+  - http://releases.llvm.org/6.0.1/clang+llvm-6.0.1-x86_64-linux-gnu-ubuntu-14.04.tar.xz
+  - curl https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip > ninja-linux.zip
+  - unzip ninja-linux.zip
+  - export PATH=~/ninja:$PATH
 before_script:
   - mkdir build && cd build
 script:
-  - cmake -DCMAKE_C_COMPILER=clang-6.0 -DCMAKE_BUILD_TYPE=Release ..
-  - cmake --build . -- -j2
-  - ctest . -j2
+  - cmake -GNinja -DCMAKE_C_COMPILER=clang-6.0 -DCMAKE_BUILD_TYPE=Release ..
+  - ninja -j $(getconf _NPROCESSORS_ONLN)
+  - ctest -j $(getconf _NPROCESSORS_ONLN)

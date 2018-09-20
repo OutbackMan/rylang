@@ -9,22 +9,36 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-        key: CMAKE
+          key: CMAKE_AND_NINJA
       - run:
           name: Ensuring CMake is Installed
-          command: type -P cmake > /dev/null || brew install cmake
+          command: | 
+            type -P cmake > /dev/null
+            brew install cmake
+      - run:
+          name: Ensuring Ninja is Installed
+          command: |
+            type -P ninja > /dev/null 
+            curl https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-mac.zip  > ninja-mac.zip 
+            mkdir ~/ninja
+            unzip ninja-mac -d ~/ninja
+            export PATH=~/ninja:$PATH
       - run:
           name: Ensuring Out-Of-Tree Build
-          command: mkdir build && cd build
+          command: |
+            mkdir build
+            cd build
       - run:
           name: Configuring Rylang
-          command: cmake -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release ..
+          command: cmake -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release ..
       - run:
           name: Building Rylang
-          command: cmake --build . -- -j2
+          command: ninja -j $(getconf _NPROCESSORS_ONLN)
       - run:
           name: Testing Rylang
-          command: ctest . -j2 
+          command: ctest -j $(getconf _NPROCESSORS_ONLN)
       - save_cache:
-          key: CMAKE
-          paths: "/usr/local/Cellar/cmake"
+          key: CMAKE_AND_NINJA
+          paths: 
+            - "/usr/local/Cellar/cmake"
+            - "~/ninja"

@@ -6,6 +6,9 @@ clone_depth: 1
     
 image: Visual Studio 2017
 
+cache:
+  - C:\ninja_and_clang
+
 before_build:
   - mkdir C:\ninja
   - cd C:\ninja

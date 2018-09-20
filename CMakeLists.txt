@@ -14,6 +14,12 @@ project(
 )
 
 if(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
+  if(WIN32 AND NOT MINGW)
+    message(
+      FATAL_ERROR
+      "[RYLANG] -- Please use clang > 6 supporting GNU ABI"
+    )
+  endif(WIN32 AND NOT MINGW)
   string(
    REPLACE
    "."
@@ -22,10 +28,10 @@ if(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
    ${CMAKE_C_COMPILER_ID}
   )
 
-  if(${CLANG_VERSION} LESS 500)
+  if(${CLANG_VERSION} LESS 600)
     message(
       FATAL_ERROR
-      "[RYLANG] -- Please use clang > 5 supporting GNU ABI"
+      "[RYLANG] -- Please use clang > 6"
     )
   endif(${CLANG_VERSION} LESS 500)
 
@@ -75,7 +81,7 @@ if(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
 else(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
   message(
     FATAL_ERROR
-	"[RYLANG] -- Please use clang > 5 supporting GNU ABI"
+	"[RYLANG] -- Please use clang > 6"
   )
 endif(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
 
