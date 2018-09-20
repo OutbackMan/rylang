@@ -20,13 +20,12 @@ addons:
 
 install:
   - mkdir ~/ninja
-  - cd ~/ninja
   - wget https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip
-  - unzip ninja-linux.zip
-  - cd .. 
+  - unzip ninja-linux.zip -d ~/ninja
   - export PATH=~/ninja:$PATH
 before_script:
-  - mkdir build && cd build
+  - mkdir build
+  - cd build
 script:
   - cmake -GNinja -DCMAKE_C_COMPILER=clang6.0 -DCMAKE_BUILD_TYPE=Release ..
   - ninja -j $(getconf _NPROCESSORS_ONLN)
