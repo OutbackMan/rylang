@@ -5,19 +5,16 @@ git:
   depth: 1
   quiet: true
 
-sudo: required
-dist: trusty
+os: macos
 
 language: c
+compiler: clang
 
 install:
-  - mkdir ~/clang6
-  - wget http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-14.04.tar.xz
-  - tar -xf clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-14.04.tar.xz -C ~/clang6
   - mkdir ~/ninja
-  - wget https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip
-  - unzip ninja-linux.zip -d ~/ninja
-  - export PATH=~/ninja:~/clang6:$PATH
+  - curl https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-mac.zip -o ninja.zip
+  - unzip ninja.zip -d ~/ninja
+  - export PATH=~/ninja:$PATH
 before_script:
   - mkdir build
   - cd build

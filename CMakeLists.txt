@@ -20,20 +20,6 @@ if(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
       "[RYLANG] -- On windows, install and use clang > 6 supporting GNU ABI"
     )
   endif(WIN32 AND NOT MINGW)
-  string(
-   REPLACE
-   "."
-   ""
-   CLANG_VERSION
-   ${CMAKE_C_COMPILER_ID}
-  )
-
-  if(${CLANG_VERSION} LESS 600)
-    message(
-      FATAL_ERROR
-      "[RYLANG] -- Expected clang > 6. Recieved ${CMAKE_C_COMPILER_VERSION}"
-    )
-  endif(${CLANG_VERSION} LESS 600)
 
   set(
     RYLANG_SOURCES 
