@@ -14,7 +14,7 @@ install:
   - mkdir ~/clang6
   - curl http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-apple-darwin.tar.xz -o clang.tar.xz
   - tar -xf clang.tar.xz -C ~/clang6
-  - export PATH=~/clang6/clang+llvm-6.0.0-x86_64-apple-darwin/bin:$TRAVIS_BUILD_DIR/ninja-binaries/mac:$PATH
+  - export PATH="~/clang6/clang+llvm-6.0.0-x86_64-apple-darwin/bin:$TRAVIS_BUILD_DIR/ninja-binaries/mac:$PATH"
 before_script:
   - mkdir build
   - cd build
