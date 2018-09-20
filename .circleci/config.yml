@@ -9,7 +9,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: CMAKE_AND_NINJA
+          key: DEPENDENCIES
       - run:
           name: Ensuring CMake is Installed
           command: | 
@@ -38,7 +38,7 @@ jobs:
           name: Testing Rylang
           command: ctest -j $(getconf _NPROCESSORS_ONLN)
       - save_cache:
-          key: CMAKE_AND_NINJA
+          key: DEPENDENCIES
           paths: 
             - "/usr/local/Cellar/cmake"
             - "~/ninja"

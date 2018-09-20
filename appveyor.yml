@@ -7,18 +7,20 @@ clone_depth: 1
 image: Visual Studio 2017
 
 cache:
-  - C:\ninja_and_clang
+  - C:\ninja
+  - C:\msys64_mingw64_clang
 
 before_build:
-  - mkdir C:\ninja
-  - cd C:\ninja
-  - appveyor DownloadFile https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-win.zip
-  - 7z x ninja-win.zip
-  - set PATH=C:\ninja;C:\msys64\usr\bin;C:\msys64\mingw64\bin;%PATH%
-  - bash -c "pacman -S mingw-w64-x86_64-clang --noconfirm"
+  - set PATH=C:\msys64\usr\bin;C:\ninja;C:\msys64_mingw64_clang\bin;%PATH%
+  - if not exist C:\msys64_mingw64_clang set REQUIRE_MSYS64_MINGW64_CLANG=rem
+  - %REQUIRE_MSYS64_MINGW64_CLANG% mkdir C:\msys64_mingw64_clang 
+  - %REQUIRE_MSYS64_MINGW64_CLANG% pacman -S mingw-w64-x86_64-clang --root=C:\msys64_mingw64_clang --noconfirm
+  - if not exist C:\ninja set REQUIRE_NINJA=rem
+  - %REQUIRE_NINJA% mkdir C:\ninja 
+  - %REQUIRE_NINJA% appveyor DownloadFile https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-win.zip 
+  - %REQUIRE_NINJA% 7z x -oC:\ninja ninja-win.zip
 
 build_script:
-  - cd %APPVEYOR_BUILD_FOLDER%
   - mkdir build
   - cd build
   - cmake -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release ..
