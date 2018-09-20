@@ -21,6 +21,20 @@ if(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
     )
   endif(WIN32 AND NOT MINGW)
 
+  string(
+   REPLACE
+   "."
+    ""
+    CLANG_VERSION
+   ${CMAKE_C_COMPILER_ID}
+  )
+  if(${CLANG_VERSION} LESS 600)
+    message(
+      FATAL_ERROR
+      "[RYLANG] -- Please use clang > 6"
+    )
+  endif(${CLANG_VERSION} LESS 600)
+
   set(
     RYLANG_SOURCES 
     src/common.c

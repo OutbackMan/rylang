@@ -9,12 +9,19 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Downloading CMake
+          command: |
+            mkdir ~/cmake
+            curl http://https://cmake.org/files/v3.12/cmake-3.12.2-Linux-x86_64.tar.gz -o cmake.tar.gz
+            tar -xf cmake.tar.gz -C ~/cmake
+            export PATH=~/cmake/cmake-3.12.2-Linux-x86_64/bin:$PATH
+      - run:
           name: Downloading Clang6
           command: |
             mkdir ~/clang6
-            curl http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz -o clang.tar.xz
+            curl http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-14.04.tar.xz -o clang.tar.xz
             tar -xf clang.tar.xz -C ~/clang6
-            export PATH=~/clang6/clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-16.04/bin:$PATH
+            export PATH=~/clang6/clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-14.04/bin:$PATH
       - run:
           name: Adding Ninja to $PATH
           command: export PATH=$CIRCLE_WORKING_DIRECTORY/ninja-binaries/linux:$PATH
