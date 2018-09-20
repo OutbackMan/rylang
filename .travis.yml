@@ -13,7 +13,7 @@ install:
   - tar -xf clang.tar.xz -C ~/clang6
   - mkdir ~/ninja
   - curl https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-mac.zip > ninja-mac.zip
-  - tar -xf ninja-mac.zip -C ~/ninja
+  - unzip ninja-mac.zip -d ~/ninja
   - export PATH=~/ninja:~/clang6:$PATH
 before_script:
   - mkdir build && cd build
