@@ -8,16 +8,16 @@ jobs:
       - image: buildpack-deps:trusty
     steps:
       - checkout
-      - run:
-          name: Installing Unzip
-          command: sudo apt-get install unzip -y 
+      - run: 
+          name: Downloading Clang6
+          command: |
+            mkdir ~/clang6
+            curl http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-14.04.tar.xz > clang.tar.xz
+            tar -xf clang.tar.xz -d ~/clang6
+            export PATH=~/clang6:$PATH
       - run:
           name: Installing Ninja
-          command: |
-            curl https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip  > ninja.zip 
-            mkdir ~/ninja
-            unzip ninja -d ~/ninja
-            export PATH=~/ninja:$PATH
+          command: sudo apt-get install ninja-build
       - run:
           name: Ensuring Out-Of-Tree Build
           command: |
