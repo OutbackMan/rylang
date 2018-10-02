@@ -64,7 +64,7 @@ if(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
     -Wall -Wextra -Wpedantic -Wfloat-equal -Wunreachable-code -Wshadow
 	  -Wno-language-extension-token -Wno-nullability-extension 
 	  -Wno-gnu-zero-variadic-macro-arguments -Wno-gnu-case-range
-    -Wno-incompatible-pointer-types-discards-qualifiers
+    -Wno-incompatible-pointer-types
   )
 
   target_compile_options(

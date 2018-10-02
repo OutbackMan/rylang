@@ -8,6 +8,7 @@
 // globals --> simplify code
 // cmake --> recreate build folder to recreate error
 // workflow --> write feature_test() for main() and later formalise into test
+// js --> saucelabs
 
 #include <stdio.h>
 #include <stdlib.h>
