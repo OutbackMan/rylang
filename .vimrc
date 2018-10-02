@@ -34,15 +34,15 @@ set foldlevelstart=0
 set statusline=%F%m%r\ [EOL=%{&fileformat}]\ [TYPE=%Y]\ [ASCII=%03.3b]\ [POS=%04l,%04v]\ [%p%%]\ [LINES=%L]
 
 function! Build()
-  " check if __BUILD__ tab exists
   let build_tab = bufwinnr("__BUILD__")
+  let build_cmd = 'pushd build && ' . g:build_cmds[g:os][g:build_output] . " && popd\<CR>"
   if build_tab == -1
     tabedit __BUILD__ 
     terminal ++curwin
   else
-    execute build_tab . 'wincmd w'  
+    execute build_tab . 'wincmd w'
   endif
-  termsendkeys() " build
+  call term_sendkeys(build_tab, build_cmd)
 endfunction
 
 inoremap <C-b> :call Build()<CR>
