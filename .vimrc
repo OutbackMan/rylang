@@ -33,6 +33,14 @@ set foldlevelstart=0
 
 set statusline=%F%m%r\ [EOL=%{&fileformat}]\ [TYPE=%Y]\ [ASCII=%03.3b]\ [POS=%04l,%04v]\ [%p%%]\ [LINES=%L]
 
+if !exists('g:os')
+  if has('win64') || has ('win32')
+    let g:os = 'Windows'
+  else
+    let g:os = substitute(system('uname'), '\n', '', '')
+  endif
+endif
+
 function! Build()
   let build_tab = bufwinnr("__BUILD__")
   let build_cmd = 'pushd build && ' . g:build_cmds[g:os][g:build_output] . " && popd\<CR>"
