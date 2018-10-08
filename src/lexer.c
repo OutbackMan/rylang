@@ -1,4 +1,4 @@
-#include "lexer.h"
+#include "nmexer.h"
 #include "common.h"
 
 LexToken lex_token;

@@ -113,14 +113,4 @@ typedef struct {
 byte* NON_NULL
 buf__grow(void* NULLABLE content, size_t desired_len, size_t elem_size);
 
-byte* NULLABLE 
-read_file(char* NON_NULL path);
-
-bool
-write_file(
-  char* NON_NULL path, 
-  char* NON_NULL buf, 
-  size_t len
-);
-
 #endif

@@ -33,17 +33,24 @@ set foldlevelstart=0
 
 set statusline=%F%m%r\ [EOL=%{&fileformat}]\ [TYPE=%Y]\ [ASCII=%03.3b]\ [POS=%04l,%04v]\ [%p%%]\ [LINES=%L]
 
-if !exists('g:os')
-  if has('win64') || has ('win32')
-    let g:os = 'Windows'
-  else
-    let g:os = substitute(system('uname'), '\n', '', '')
-  endif
+if has('win64') || has ('win32')
+  let s:build_cmd = "pushd build &&
+      \ cmake -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Debug .. && 
+      \ ninja -j %NUMBER_OF_PROCESSORS% &&
+      \ popd\<CR>"
+else
+  let s:build_cmd = "pushd build &&
+      \ cmake -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Debug .. && 
+      \ ninja -j $(getconf _NPROCESSORS_ONLN) &&
+      \ popd\<CR>"
 endif
 
-function! Build()
-  let build_tab = bufwinnr("__BUILD__")
-  let build_cmd = 'pushd build && ' . g:build_cmds[g:os][g:build_output] . " && popd\<CR>"
+function! s:Build()
+  execute 'cd ' . findfile('CMakeLists.txt', '.;')
+  if !isdirectory('build')
+    call mkdir('build')
+  endif
+  let build_tab = bufwinnr('__BUILD__')
   if build_tab == -1
     tabedit __BUILD__ 
     terminal ++curwin
