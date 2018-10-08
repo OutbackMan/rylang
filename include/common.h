@@ -4,7 +4,7 @@
 // timing --> consider is application batch or long-running
 // errors --> only handle errors appropriate/relevent to domain
 // const --> assumes knowledge of api. if want optimisation, use restrict
-// macros --> give lazy evaluation. use appripriately.
+// macros --> give lazy evaluation. use appripriately. (, ) parameter expansion
 // globals --> simplify code
 // cmake --> recreate build folder to recreate error
 // workflow --> write feature_test() for main() and later formalise into test

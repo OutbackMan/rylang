@@ -39,6 +39,7 @@ if(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
     RYLANG_SOURCES 
     src/common.c
     src/rylang.c
+    src/lexer.c
   )
   
   add_executable(
