@@ -63,9 +63,8 @@ if(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
     rylang
 	  PRIVATE
     -Wall -Wextra -Wpedantic -Wfloat-equal -Wunreachable-code -Wshadow
-	  -Wno-language-extension-token -Wno-nullability-extension 
-	  -Wno-gnu-zero-variadic-macro-arguments -Wno-gnu-case-range
-    -Wno-incompatible-pointer-types
+	  -Wno-language-extension-token -Wno-gnu-zero-variadic-macro-arguments 
+    -Wno-gnu-case-range
   )
 
   target_compile_options(

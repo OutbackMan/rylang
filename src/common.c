@@ -2,10 +2,10 @@
 
 void
 fatal(
-  char* file_name, 
+  char const* file_name, 
   int line_num, 
-  char* fnc_sig, 
-  char* fmt_str, 
+  char const* fnc_sig, 
+  char const* fmt_str, 
   ...
 )
 {

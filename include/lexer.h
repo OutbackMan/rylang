@@ -11,21 +11,22 @@ typedef enum {
 
 typedef struct {
   LEX_TOKEN_TYPE type;
-  char* start;
-  char* end;
+  char const* start;
+  char const* end;
   union {
     u64 val;
+    char const* name;
   };
 } LexToken;
 
 extern LexToken lex_token;
 
 void
-lex_next_token(char* stream);
+lex_next_token(char const* stream);
 
 typedef struct {
   size_t len;
-  char* str;
+  char const* str;
 } LexInternStr;
 
 extern LexInternStr* lex_intern_str_table;

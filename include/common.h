@@ -3,11 +3,13 @@
 
 // timing --> consider is application batch or long-running
 // errors --> only handle errors appropriate/relevent to domain
-// const --> assumes knowledge of api. if want optimisation, use restrict
+// const --> assumes knowledge of api. if want optimisation, use restrict. Only use for chars as dictated by clib
 // macros --> give lazy evaluation. use appripriately. (, ) parameter expansion
 // globals --> simplify code
 // cmake --> recreate build folder to recreate error
-// workflow --> write feature_test() for main() and later formalise into test
+// workflow --> write feature_test() for main() and later formalise into test.
+//   inspect values in debugger for expected
+//   check for memory leaks with top/process explorer
 // js --> saucelabs
 
 #include <stdio.h>
@@ -46,8 +48,7 @@
 #define CLEANUP(fnc) __attribute__((__cleanup__(fnc)))
 #define PRINTF_FMT(fmt_str_index, args_index) \
   __attribute__((format(printf, fmt_str_index, args_index)))
-#define NON_NULL _Nonnull
-#define NULLABLE _Nullable
+#define NO_NULL_RET __attribute__((returns_nonnull))
 
 typedef unsigned int uint;
 typedef uint8_t u8;
@@ -65,10 +66,10 @@ typedef char byte;
   fatal(__FILE__, __LINE__, __PRETTY_FUNCTION__, ##__VA_ARGS__)
 PRINTF_FMT(4, 5) NO_RETURN void 
 fatal(
-  char* NON_NULL file_name, 
+  char const* file_name, 
   int line_num, 
-  char* NON_NULL fnc_sig, 
-  char* NON_NULL fmt_str, 
+  char const* fnc_sig, 
+  char const* fmt_str, 
   ...
 );
 
@@ -77,20 +78,23 @@ fatal(
 #define MAX(val1, val2) (val1 > val2 ? val1 : val2)
 #define CLAMP_MIN(clamp, val) MAX(clamp, val)
 
-RAW_MEM void* NON_NULL
+RAW_MEM NO_NULL_RET void*
 xmalloc(size_t num_bytes);
 
-RAW_MEM void* NON_NULL
+RAW_MEM NO_NULL_RET void*
 xcalloc(size_t num_items, size_t item_size);
 
-void* NON_NULL
-xrealloc(void* NON_NULL orig_mem, size_t mem_size_change);
+NO_NULL_RET void*
+xrealloc(void* orig_mem, size_t mem_size_change);
 
 typedef struct {
   size_t cap;
   size_t len;
   byte content[];
 } Buf;
+
+NO_NULL_RET byte* 
+buf__grow(void* content, size_t desired_len, size_t elem_size);
 
 #define BUF__HEADER(b) \
   ((Buf* )((byte* )(b) - offsetof(Buf, content)))
@@ -102,15 +106,12 @@ typedef struct {
   (((b) != NULL) ? BUF__HEADER(b)->len : 0)
 
 #define BUF__FIT(b, amount) \
-  ((amount) <= BUF_CAP(b) ? 0 : ((b) = buf__grow((b), amount, sizeof(*(b)))))
+  ((amount) <= BUF_CAP(b) ? 0 : ((b) = (typeof(b))buf__grow((b), amount, sizeof(*(b)))))
 
 #define BUF_PUSH(b, elem) \
   (BUF__FIT((b), BUF_LEN(b) + 1), (b)[BUF__HEADER(b)->len++] = (elem))
 
 #define BUF_FREE(b) \
   (((b) != NULL) ? (free(BUF__HEADER(b)), (b) = NULL) : (void)(0))
-
-byte* NON_NULL
-buf__grow(void* NULLABLE content, size_t desired_len, size_t elem_size);
 
 #endif
