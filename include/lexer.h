@@ -10,11 +10,11 @@ typedef enum {
 } LEX_TOKEN_TYPE;
 
 typedef struct {
-  LEX_TOKEN_TYPE type;
+  LEX_TOKEN_TYPE type; // will store ascii if just a single entity
   char const* start;
   char const* end;
   union {
-    u64 val;
+    u32 val;
     char const* name;
   };
 } LexToken;

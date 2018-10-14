@@ -60,7 +60,7 @@ typedef int8_t int8;
 typedef int16_t int16;
 typedef int32_t int32;
 typedef int64_t int64;
-typedef char byte;
+typedef unsigned char byte;
 
 #define FATAL(...) \
   fatal(__FILE__, __LINE__, __PRETTY_FUNCTION__, ##__VA_ARGS__)
@@ -73,9 +73,9 @@ fatal(
   ...
 );
 
-#define MIN(val1, val2) (val1 < val2 ? val1 : val2)
+#define MIN(val1, val2) ((val1) < (val2) ? (val1) : (val2))
 #define CLAMP_MAX(clamp, val) MIN(clamp, val)
-#define MAX(val1, val2) (val1 > val2 ? val1 : val2)
+#define MAX(val1, val2) ((val1) > (val2) ? (val1) : (val2))
 #define CLAMP_MIN(clamp, val) MAX(clamp, val)
 
 RAW_MEM NO_NULL_RET void*
