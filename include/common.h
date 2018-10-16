@@ -108,10 +108,20 @@ buf__grow(void* content, size_t desired_len, size_t elem_size);
 #define BUF__FIT(b, amount) \
   ((amount) <= BUF_CAP(b) ? 0 : ((b) = (typeof(b))buf__grow((b), amount, sizeof(*(b)))))
 
-#define BUF_PUSH(b, elem) \
-  (BUF__FIT((b), BUF_LEN(b) + 1), (b)[BUF__HEADER(b)->len++] = (elem))
+// __VA_ARGS__ to avoid preprocessor comma interpretation
+#define BUF_PUSH(b, ...) \ 
+  (BUF__FIT((b), BUF_LEN(b) + 1), (b)[BUF__HEADER(b)->len++] = (__VA_ARGS__))
 
 #define BUF_FREE(b) \
   (((b) != NULL) ? (free(BUF__HEADER(b)), (b) = NULL) : (void)(0))
+
+#define BUF_END(b) \
+  ((b) + BUF_LEN(b))
+
+/*
+ * for (int* it = buf; it != BUF_END(buf); ++it) {
+ *  int elem = it->content;
+ * }
+ */
 
 #endif

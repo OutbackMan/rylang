@@ -11,10 +11,16 @@ lex_next_token(char const* stream)
   switch (*stream) {
     case '1' ... '9': {
       lex_token.type = INT;
-      u32 val = 0;
+      int val = 0;
       while (isdigit(*stream)) {
-        val *= 10;
-      val += *stream++ - '0';
+        int digit = *stream++ - '0';
+        if (val > INT_MAX - digit / 10) {
+          syntax_error("Integer literal overflow");
+          while (isdigit(*stream)) {
+            stream++; 
+          }
+        }
+        val = val * 10 + digit;
       }
       lex_token.val = val;
     } break;
@@ -28,7 +34,7 @@ lex_next_token(char const* stream)
       lex_token.name = str_intern_range(lex_token.start, stream);
       } break;
     default: {
-      lex_token.type = stream;
+      lex_token.type = *stream++;
     } break;
   }
   lex_token.end = stream;
@@ -147,7 +153,7 @@ int parse_expr3()
 int parse_expr2()
 {
   if (match_token('-')) {
-    return -parse_expr3(); 
+    return -parse_expr2(); // allow for chaining of unary
   } else {
     return parse_expr3(); 
   }

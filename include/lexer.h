@@ -14,7 +14,7 @@ typedef struct {
   char const* start;
   char const* end;
   union {
-    u32 val;
+    int val;
     char const* name;
   };
 } LexToken;
