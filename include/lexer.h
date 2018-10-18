@@ -6,7 +6,8 @@
 typedef enum {
   LAST_CHAR = 127,
   INT,
-  NAME
+  NAME,
+  FLOAT,
 } LEX_TOKEN_TYPE;
 
 typedef struct {
@@ -14,7 +15,8 @@ typedef struct {
   char const* start;
   char const* end;
   union {
-    int val;
+    u64 int_val;
+    double float_val;
     char const* name;
   };
 } LexToken;

@@ -73,7 +73,7 @@ xrealloc(void* orig_mem, size_t mem_size_change)
 byte* 
 buf__grow(void* content, size_t desired_len, size_t elem_size)
 {
-  // overflow checking
+  // overflow checking -- rearrange expression 
   assert(BUF_CAP(content) < SIZE_MAX / 2);
   size_t new_cap = CLAMP_MIN(2 * BUF_CAP(content), MAX(desired_len, 16));
   // implicit predicate

@@ -3,26 +3,74 @@
 
 LexToken lex_token;
 
+// all invalid numbers will be 0 initialised
+#define INVALID_CH_TO_DIGIT 0
+static unsigned char ch_to_digit[128] = {
+  ['0'] = 0, ['1'] = 1, ['2'] = 2, ['3'] = 3, ['4'] = 4, 
+  ['5'] = 5, ['6'] = 6, ['7'] = 7, ['8'] = 8, ['9'] = 9,
+  ['a'] = ['A'] = 10, ['b'] = ['B'] = 11, ['c'] = ['C'] = 12,
+  ['d'] = ['D'] = 13, ['e'] = ['E'] = 14, ['f'] = ['F'] = 15
+};
+
+void scan_int()
+{
+  int base = 10;
+  if (*stream++ == '0') {
+    if (tolower(*stream) == 'x') {
+      base = 16;
+      stream++;
+    else if (isdigit(*stream)) {
+      base = 8; 
+      stream++;
+    } else if (tolower(*stream) == 'b') {
+      base = 2;
+      stream++;
+    } else {
+      syntax_error("Invalid integer suffix %c", *stream);       
+    } 
+  }
+
+  if (base == 10 && *stream == '.') {
+    lex_token.type = FLOAT;
+  }
+  
+  lex_token.type = INT;
+  u64 val = 0;
+
+  while (true) {
+    u64 digit = ch_to_digit[*stream]; // more capable than *stream++ - '0';
+    if (stream != '0' && digit == INVALID_CH_TO_DIGIT) {
+      break;
+    }
+    if (digit >= base) {
+      syntax_error("Digit outside of base range");
+    }
+    if (val > (UINT64_MAX - digit) / base) {
+      syntax_error("Integer literal overflow");
+      while (isdigit(*stream)) {
+        stream++; 
+      }
+    }
+    val = val * base + digit;
+  }
+
+  lex_token.val = val;
+}
+
 void
 lex_next_token(char const* stream)
 {
   // allows for asm jump tables
   lex_token.start = stream;
   switch (*stream) {
-    case '1' ... '9': {
-      lex_token.type = INT;
-      int val = 0;
-      while (isdigit(*stream)) {
-        int digit = *stream++ - '0';
-        if (val > INT_MAX - digit / 10) {
-          syntax_error("Integer literal overflow");
-          while (isdigit(*stream)) {
-            stream++; 
-          }
-        }
-        val = val * 10 + digit;
+    case ' ': case '\t': case '\r': case '\n': {
+      while (isspace(*stream)) {
+        stream++;
       }
-      lex_token.val = val;
+      lex_next_token();
+    } break;
+    case '0' ... '9': {
+      scan_int();
     } break;
     case 'A' ... 'Z':
     case 'a' ... 'z':
