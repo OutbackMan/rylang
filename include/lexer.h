@@ -4,14 +4,24 @@
 #include "common.h"
 
 typedef enum {
+  EOF = 0,
   LAST_CHAR = 127,
   INT,
   NAME,
   FLOAT,
 } LEX_TOKEN_TYPE;
 
+typedef enum {
+  NONE, // match null terminator
+  BIN,
+  OCT,
+  HEX,
+  CHAR
+} LEX_TOKEN_SUB_TYPE;
+
 typedef struct {
   LEX_TOKEN_TYPE type; // will store ascii if just a single entity
+  LEX_TOKEN_SUB_TYPE sub_type;
   char const* start;
   char const* end;
   union {

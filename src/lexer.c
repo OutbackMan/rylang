@@ -15,6 +15,7 @@ static unsigned char ch_to_digit[128] = {
 void scan_int()
 {
   int base = 10;
+  LEX_TOKEN_SUB_TYPE sub_type = NONE;
   if (*stream++ == '0') {
     if (tolower(*stream) == 'x') {
       base = 16;
@@ -69,8 +70,28 @@ lex_next_token(char const* stream)
       }
       lex_next_token();
     } break;
+    case "'": {
+      token.type = CHAR;          
+      scan_char();
+    } break;
+    case "\"": {
+      token.type = STRING;          
+      scan_str();
+    } break;
     case '0' ... '9': {
-      scan_int();
+      while (isdigit(*stream)) {
+        stream++; 
+      } 
+      if (*stream == '.' || tolower(*stream) == 'e') {
+        // bookmarked/recorded string here 
+        stream = token.start;
+        token.type = FLOAT;
+        token.float_val = parse_float();
+      } else {
+        stream = token.start;
+        token.type = INT;
+        token.int_val = parse_int();
+      }
     } break;
     case 'A' ... 'Z':
     case 'a' ... 'z':
@@ -86,6 +107,65 @@ lex_next_token(char const* stream)
     } break;
   }
   lex_token.end = stream;
+}
+
+static char escape_to_ch[128] = {
+  ['a'] = '\a',
+  ['b'] = '\b',
+  ['t'] = '\t',
+  ['r'] = '\r',
+  ['n'] = '\n',
+};
+
+void scan_char(void)
+{
+  assert(*stream == '\'');
+  ++stream;
+
+  char val;
+  if (*stream == '\\') {
+    ++stream;
+    val = escape_to_ch[*stream];
+  }
+
+  if (*stream != '\'') {
+    syntax_error("Expected closing ' for char literal"); 
+  } else {
+    ++stream; 
+  }
+}
+
+double scan_float()
+{
+  char const* start = stream;
+  while (isdigit(*stream)) {
+    digit++;  
+  }
+  if (stream == '.') {
+    stream++;
+  }
+  while (isdigit(*stream)) {
+    digit++;  
+  }
+  // principle of parsing -> find, handle, consume
+  if (tolower(*stream) == 'e') {
+    stream++; 
+    if (*stream == '+' || *stream == '-') {
+      stream++; 
+    }
+    if (!isdigit(*stream)) {
+      syntax_error("Expected digit after float literal exponent"); 
+    }
+    while (isdigit(*stream)) {
+      stream++; 
+    }
+  }
+  char const* end = stream;
+  double val = strtod(start, NULL);
+  if (val == HUGE_VAL || val == -HUGE_VAL) {
+    syntax_error("float literal overflow"); 
+  }
+  return val;
 }
 
 LexInternStr* _intern_str_table;
