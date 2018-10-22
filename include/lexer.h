@@ -9,6 +9,7 @@ typedef enum {
   INT,
   NAME,
   FLOAT,
+  STR,
 } LEX_TOKEN_TYPE;
 
 typedef enum {
@@ -28,6 +29,7 @@ typedef struct {
     u64 int_val;
     double float_val;
     char const* name;
+    char const* str_val;
   };
 } LexToken;
 

@@ -58,6 +58,7 @@ void scan_int()
   lex_token.val = val;
 }
 
+// aim for LL(1) at token level, NOT character level
 void
 lex_next_token(char const* stream)
 {
@@ -109,6 +110,29 @@ lex_next_token(char const* stream)
   lex_token.end = stream;
 }
 
+void scan_str(void)
+{
+  assert(*stream == '"');
+  char* buf = NULL;
+
+  token.type = STR;
+  stream++;
+  char* val = stream;
+  while (*stream != '"') {
+    if (*stream == '\n') {
+      syntax_error("String literal cannot contain new line"); 
+    }
+    if (*stream == '\\') {
+      val = escape_to_ch[*stream];
+    }
+    BUF_PUSH(buf, *val);
+    stream++; 
+    val++;
+  }
+  BUF_PUSH(buf, '\0');
+  token.str_val = buf;
+}
+
 static char escape_to_ch[128] = {
   ['a'] = '\a',
   ['b'] = '\b',
@@ -139,13 +163,13 @@ double scan_float()
 {
   char const* start = stream;
   while (isdigit(*stream)) {
-    digit++;  
+    stream++;  
   }
   if (stream == '.') {
     stream++;
   }
   while (isdigit(*stream)) {
-    digit++;  
+    stream++;  
   }
   // principle of parsing -> find, handle, consume
   if (tolower(*stream) == 'e') {
