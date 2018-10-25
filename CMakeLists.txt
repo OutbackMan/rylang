@@ -46,10 +46,6 @@ if(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
     rylang 
     ${RYLANG_SOURCES}
   )
-
-  set(CMAKE_C_FLAGS "")
-  set(CMAKE_C_FLAGS_DEBUG "")
-  set(CMAKE_C_FLAGS_RELEASE "")
   
   target_compile_definitions(
     rylang 

@@ -3,13 +3,19 @@
 
 #include "common.h"
 
+#define PRINT_TOKEN_NAME() \
+  printf("%.*s", (size_t)(token.start - token.end), token.start)
+
 typedef enum {
   EOF = 0,
+  // reserve first 128 for one char tokens
   LAST_CHAR = 127,
   INT,
   NAME,
   FLOAT,
   STR,
+  INC,
+  INC_ASSIGN
 } LEX_TOKEN_TYPE;
 
 typedef enum {

@@ -19,14 +19,19 @@ void scan_int()
   if (*stream++ == '0') {
     if (tolower(*stream) == 'x') {
       base = 16;
+      sub_type = HEX;
       stream++;
     else if (isdigit(*stream)) {
       base = 8; 
+      sub_type = OCTAL;
       stream++;
     } else if (tolower(*stream) == 'b') {
       base = 2;
+      sub_type = BINARY;
       stream++;
     } else {
+      token.type = INT;
+      token.val = 0;
       syntax_error("Invalid integer suffix %c", *stream);       
     } 
   }
@@ -103,6 +108,17 @@ lex_next_token(char const* stream)
       } 
       lex_token.name = str_intern_range(lex_token.start, stream);
       } break;
+    // there is no lexing distinction between unary minus and binary, only parsing
+    case '+': {
+      token.type = *stream++; // handle single char case
+      if (*stream == '+') {
+        token.type = OP_INC; 
+        stream++;
+      } else if (*stream == '=') {
+        token.type = OP_INC_ASSIGN; 
+        stream++;
+      }
+    } break;
     default: {
       lex_token.type = *stream++;
     } break;
@@ -288,6 +304,8 @@ char const* token_type_str(LEX_TOKEN_TYPE token_type)
  * expr = expr0
  * START FROM LOWEST PRECENDENCE
  */
+
+// to avoid having to store extra data, have explicit 'markers' that signify information
 int parse_expr3()
 {
   if (is_token(TOKEN_INT)) {
