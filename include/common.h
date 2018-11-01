@@ -12,6 +12,9 @@
 //   check for memory leaks with top/process explorer
 // js --> saucelabs
 
+
+// arena allocators speed up allocations, segregates memory lifetimes, linearises memory (cache prefetches for traversals)
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>

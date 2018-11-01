@@ -1,6 +1,8 @@
 #if !defined(AST_H)
 #define AST_H
 
+// create nodes of ast
+
 typedef enum {
   NONE,
   PAREN,
@@ -53,7 +55,6 @@ typedef struct {
   union {
     EnumItem* enum_items;
     AggregateItem* aggregate_items;
-    VarDecl var_decl;
     struct { 
       // canonicalise for var, const, typedef
       Type* type;
@@ -79,9 +80,11 @@ typedef enum {
   TERNARY
 } EXPR_TYPE;
 
+// have a tree data structure when a struct contains non-linear pointer chains
 typedef struct Expr Expr;
 struct Expr {
   EXPR_TYPE type;
+  TOKEN_TYPE op;
   union {
     u64 int_val;
     double float_val;
@@ -89,7 +92,7 @@ struct Expr {
     char const* name;
     struct {
       Type* cast_type;
-      Expr* cast_expr;
+      Expr* operand;
     };
     struct {
       // unary
@@ -109,6 +112,33 @@ struct Expr {
     };
   };
 };
+
+Expr* create_expr_type(EXPR_TYPE type)
+{
+  Expr* expr = xcalloc(1, sizeof(Expr));
+  expr->type = type;
+  return expr;
+}
+
+Expr* expr_int(u64 int_val)
+{
+  Expr* expr = create_expr_type(INT);
+  expr->int_val = int_val;
+  return expr;
+}
+
+Expr* expr_str(char const* str_val);
+Expr* expr_cast(Type* type, Expr* operand);
+Expr* expr_unary(TOKEN_TYPE op, Expr* expr);
+
+void print_expr(EXPR_TYPE type)
+{
+  switch (type) {
+    case INT: {
+    
+    } break;
+  }
+}
 
 typedef enum {
   NONE,
