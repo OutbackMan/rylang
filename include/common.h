@@ -1,6 +1,14 @@
 #if !defined(COMMON_H)
 #define COMMON_H
 
+// can find information on github api
+
+/*
+  1. keywords() --> interning 
+  2. compile_file() --> parse, sym, gen 
+*/
+
+
 // timing --> consider is application batch or long-running
 // errors --> only handle errors appropriate/relevent to domain
 // const --> assumes knowledge of api. if want optimisation, use restrict. Only use for chars as dictated by clib
@@ -14,6 +22,8 @@
 
 
 // arena allocators speed up allocations, segregates memory lifetimes, linearises memory (cache prefetches for traversals)
+
+// #define ALIGN_UP() --> perhaps use __attribute__((aligned(size))
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -53,6 +63,12 @@
   __attribute__((format(printf, fmt_str_index, args_index)))
 #define NO_NULL_RET __attribute__((returns_nonnull))
 
+void
+rl_set_error(char const* fmt_str, ...);
+
+char const* 
+rl_get_error(void);
+
 typedef unsigned int uint;
 typedef uint8_t u8;
 typedef uint16_t u16;
@@ -89,6 +105,34 @@ xcalloc(size_t num_items, size_t item_size);
 
 NO_NULL_RET void*
 xrealloc(void* orig_mem, size_t mem_size_change);
+
+// open addressed, linear probing
+typedef struct {
+  void **keys;
+  void **vals;
+  size_t len;
+  size_t cap;
+} Map; 
+
+u64 ptr_hash(void* key)
+{
+  return (u64)key;  
+}
+
+u64 ptr_hash(void* ptr)
+{
+  // uint type that can hold a ptr --> useful to perform int operations on
+  u64 x = (uintptr_t)ptr; 
+  x ^= (0xff51afd7ed558ccdul) >> 32; // murmur hash ??
+  return x;
+}
+
+void *map_get(Map* map, void* key)
+{
+  u64 h = ptr_hash(key);
+  size_t i = i % map->cap;
+
+}
 
 typedef struct {
   size_t cap;

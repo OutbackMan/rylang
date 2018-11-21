@@ -49,6 +49,7 @@ typedef struct {
   char const* str;
 } LexInternStr;
 
+// in C all string literals are interned 
 extern LexInternStr* lex_intern_str_table;
 
 #endif

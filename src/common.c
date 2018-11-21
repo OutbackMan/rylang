@@ -1,5 +1,18 @@
 #include "common.h"
 
+static char global_error_msg[256];
+
+void
+rl_set_error(char const* fmt_str, ...)
+{
+}
+
+char const* 
+rl_get_error(void)
+{
+    
+}
+
 void
 fatal(
   char const* file_name, 
